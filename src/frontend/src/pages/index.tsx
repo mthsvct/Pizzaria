@@ -6,6 +6,7 @@ import logoImg from '../../public/logo.svg';
 import styles from '../../styles/home.module.scss';
 
 import { Input, TextArea } from '../components/ui/input';
+import { Button } from '../components/ui/button';
 
 import { Inter } from 'next/font/google'
 
@@ -26,7 +27,7 @@ export default function Home() {
 					<form>
 						<Input placeholder='Digite seu email: ' type='email' />
 						<Input placeholder='Digite sua senha: ' type='password' />
-						<TextArea />
+						<Button type="submit" loading={false}>Fazer Login</Button>
 					</form>
 					
 				</div>
