@@ -1,4 +1,6 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from 'next/document'; 
+
+// Neste arquivo, você pode adicionar componentes que serão renderizados em todas as páginas
 
 export default function Document() {
   return (
@@ -6,7 +8,7 @@ export default function Document() {
       <Head />
       <body>
         <Main />
-        <NextScript />
+        <NextScript /> 
       </body>
     </Html>
   )
