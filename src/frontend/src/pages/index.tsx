@@ -1,6 +1,14 @@
 // import styles from "../../styles/Home.module.scss"
-import Head from 'next/head'
+import Head from 'next/head';
+import Image from 'next/image';
+
+import logoImg from '../../public/logo.svg';
+import styles from '../../styles/home.module.scss';
+
+import { Input, TextArea } from '../components/ui/input';
+
 import { Inter } from 'next/font/google'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,8 +19,17 @@ export default function Home() {
 				<title>Sujeito Pizza - Faça seu login;</title>
 			</Head>
 
-			<div>
-				<h1>Sujeito Pizza</h1>
+			<div className={styles.containerCenter}>
+				<Image src={logoImg} alt='Logo Sujeito Pizzaria' />
+				
+				<div className={styles.login}>
+					<form>
+						<Input placeholder='Digite seu email: ' type='email' />
+						<Input placeholder='Digite sua senha: ' type='password' />
+						<TextArea />
+					</form>
+					
+				</div>
 			</div>
 		</>
 	)
