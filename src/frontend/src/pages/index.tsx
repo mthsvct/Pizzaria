@@ -29,7 +29,7 @@ export default function Home() {
 						<Input placeholder='Digite sua senha: ' type='password' />
 						<Button type="submit" loading={false}>Fazer Login</Button>
 					</form>
-					
+					<a className={styles.text}>Não possui uma conta? Cadastre-se</a>
 				</div>
 			</div>
 		</>
