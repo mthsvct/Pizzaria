@@ -28,11 +28,20 @@ export default function Home() {
 
 	async function handleLogin(event: FormEvent){
 		event.preventDefault();
+
+		if (email === '' || password === ''){
+			alert('Preencha todos os campos!'); 
+			return 
+		}
+
+		setLoading(true);
+
 		let data = {
 			email,
 			password
 		}
 		await signIn(data);
+		setLoading(false);
 	}
 
 	return (
@@ -61,7 +70,7 @@ export default function Home() {
 							onChange={(event) => setPassword(event.target.value)}
 							/>
 
-						<Button type="submit" loading={false}>Fazer Login</Button>
+						<Button type="submit" loading={loading}>Fazer Login</Button>
 
 					</form>
 
