@@ -1,5 +1,5 @@
 // import styles from "../../styles/Home.module.scss"
-import { useContext, FormEvent } from 'react';
+import { useContext, FormEvent, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -21,13 +21,18 @@ export default function Home() {
 
 	const { signIn } = useContext(AuthContext);
 
+	const [email, setEmail] = useState(''); // é atribuido o valor inicial do estado
+	const [password, setPassword] = useState('');
+
+	const [loading, setLoading] = useState(false);
+
 	async function handleLogin(event: FormEvent){
 		event.preventDefault();
 		let data = {
-			email: 'algum@teste.com',
-			password: '12345678'
+			email,
+			password
 		}
-		signIn(data);
+		await signIn(data);
 	}
 
 	return (
@@ -41,13 +46,29 @@ export default function Home() {
 				
 				<div className={styles.login}>
 					<form onSubmit={handleLogin}>
-						<Input placeholder='Digite seu email: ' type='email' />
-						<Input placeholder='Digite sua senha: ' type='password' />
+
+						<Input 
+							placeholder='Digite seu email: ' 
+							type='email'
+							value={email}
+							onChange={(event) => setEmail(event.target.value)}
+							/>
+
+						<Input 
+							placeholder='Digite sua senha: ' 
+							type='password'
+							value={password}
+							onChange={(event) => setPassword(event.target.value)}
+							/>
+
 						<Button type="submit" loading={false}>Fazer Login</Button>
+
 					</form>
+
 					<Link href="/signup" legacyBehavior>
 						<a className={styles.text}>Não possui uma conta? Cadastre-se</a>
 					</Link>
+
 				</div>
 			</div>
 		</>
