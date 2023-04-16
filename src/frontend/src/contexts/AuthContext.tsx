@@ -10,6 +10,7 @@ type AuthContextData = {
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
     signOut: () => void;
+    signUp: (credentials: SignUpProps) => Promise<void>;
 }
 
 type UserProps = {
@@ -19,6 +20,12 @@ type UserProps = {
 }
 
 type SignInProps = {
+    email: string;
+    password: string;
+}
+
+type SignUpProps = {
+    name: string;
     email: string;
     password: string;
 }
@@ -79,10 +86,34 @@ export function AuthProvider({children}:AuthProviderProps){
         }
     }
 
+    async function signUp({name, email, password}: SignUpProps){
+        try {
+
+            // Fazer a requisição para a API para criar o usuário.
+
+            const response = await api.post('/users', {
+                name: name,
+                email: email,
+                password: password
+            });
+
+            console.log("Cadastrado!");
+
+            // Redirecionar o usuário para a página de login.
+            Router.push('/');
+
+        } catch(err) {
+            // Caso de erro, não fazer nada.
+            console.log('Erro ao fazer cadastro.', err);
+        }
+    }
+
+
+
     // O user no value tava dando erro, o que professor recomendou: Confira no seu arquivo tsconfig.json se a opção strict esta marcada como false; 
 
     return(
-        <AuthContext.Provider value={{user, isAuthenticated, signIn, signOut }}>
+        <AuthContext.Provider value={{user, isAuthenticated, signIn, signOut, signUp }}>
             {children}
         </AuthContext.Provider>
     )

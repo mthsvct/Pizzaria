@@ -1,5 +1,5 @@
 // import styles from "../../styles/Home.module.scss"
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useContext } from 'react';
 
 import Head from 'next/head';
 import Image from 'next/image';
@@ -12,12 +12,16 @@ import { Button } from '@/src/components/ui/button';
 
 import Link from 'next/link';
 
-import { Inter } from 'next/font/google'
+import { AuthContext } from '@/src/contexts/AuthContext';
+
+import { Inter } from 'next/font/google';
 
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+	const { signUp } = useContext(AuthContext);
 
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -34,7 +38,12 @@ export default function Home() {
 		}
 
 		setLoading(true);
+		
+		let data = {name, email, password};
 
+		await signUp(data);
+
+		setLoading(false);
 
 		
 	}
