@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useState } from "react";
 
-import { destroyCookie } from "nookies";
+import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 
+import { api } from "../services/apiClient";
 
 type AuthContextData = {
     user: UserProps;
@@ -48,7 +49,34 @@ export function AuthProvider({children}:AuthProviderProps){
     const isAuthenticated = !!user; // Converter para booleano;
 
     async function signIn({email, password}: SignInProps){
-        console.log(`email: ${email} \n password: ${password}`);
+        try {
+            // Fazer a requisição para a API.
+            const response = await api.post('/session', {
+                email: email,
+                password:password
+            });
+
+            //console.log(response.data);
+            
+            const { id, name, token } = response.data;
+
+            setCookie(undefined, '@nextauth.token', token, {
+                maxAge: 60 * 60 * 24 * 30, // 30 dias
+                path: "/" // Quais caminhos terão acesso ao cookie.
+            }); // Esta função eh para salvar o cookie no navegador.
+
+            setUser({id, name, email});
+        
+            // Passar para as próximas requisições nosso token.
+            api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+            // Redirecionar o usuário para o dashboard (página de ultimos pedidos).
+            Router.push('/dashboard');
+
+        } catch(err) {
+            // Caso de erro, não fazer nada.
+            console.log('Erro ao fazer login.', err);
+        }
     }
 
     // O user no value tava dando erro, o que professor recomendou: Confira no seu arquivo tsconfig.json se a opção strict esta marcada como false; 
