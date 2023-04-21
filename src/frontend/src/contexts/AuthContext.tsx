@@ -38,7 +38,7 @@ export const AuthContext = createContext({} as AuthContextData);
 export function signOut(){
     try {
         // Limpar o token que tinha salvo.
-        destroyCookie(undefined, 'nextauth.token');
+        destroyCookie(undefined, '@nextauth.token');
         // Os dois parametros são: Qual o contexto que eu quero limpar o cookie e o nome do cookie que eu quero limpar.
         // O contexto é undefined porque eu quero limpar o cookie em todos os contextos.
         Router.push('/'); // Redirecionar para a página inicial.
