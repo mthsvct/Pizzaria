@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useEffect } from "react";
 import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 import { api } from "../services/apiClient";
@@ -52,6 +52,24 @@ export function AuthProvider({children}:AuthProviderProps){
 
     const [user, setUser] = useState<UserProps>(); // Inicialmente o usuário não está logado, então não temos um usuário.
     const isAuthenticated = !!user; // Converter para booleano;
+
+    useEffect(
+        () => {
+            // Tentar pegal algo no cookie
+            const { '@nextauth.token': token } = parseCookies();
+            api.get('/me').then(
+                // Caso de sucesso, pegamos os dados do usuário.
+                response => {
+                    const { id, name, email } = response.data;
+                    setUser({ id, name, email });
+                }
+            ) // Fim do then.
+            .catch(() => {
+                // Caso de erro, deslogamos.
+                signOut();
+            }) // Fim do catch.
+        }, []
+    )
 
     async function signIn({email, password}: SignInProps){
         try {
