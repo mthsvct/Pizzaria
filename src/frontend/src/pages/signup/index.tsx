@@ -16,6 +16,7 @@ import { AuthContext } from '@/src/contexts/AuthContext';
 
 import { Inter } from 'next/font/google';
 
+import { toast } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,7 +34,7 @@ export default function Home() {
 		event.preventDefault();
 
 		if (name === '' || email === '' || password === '') {
-			alert('Preencha todos os campos!');
+			toast.error('Preencha todos os campos!');
 			return;
 		}
 

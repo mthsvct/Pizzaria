@@ -1,16 +1,15 @@
 import { createContext, ReactNode, useState } from "react";
-
 import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
-
 import { api } from "../services/apiClient";
+import { toast } from "react-toastify";
 
 type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
     signOut: () => void;
-    signUp: (credentials: SignUpProps) => Promise<void>;
+    signUp: (credentials: SignUpProps) => Promise<void>; 
 }
 
 type UserProps = {
@@ -49,7 +48,6 @@ export function signOut(){
     }
 }
 
-
 export function AuthProvider({children}:AuthProviderProps){
 
     const [user, setUser] = useState<UserProps>(); // Inicialmente o usuário não está logado, então não temos um usuário.
@@ -77,12 +75,15 @@ export function AuthProvider({children}:AuthProviderProps){
             // Passar para as próximas requisições nosso token.
             api.defaults.headers['Authorization'] = `Bearer ${token}`
 
+            toast.success("Logado com Sucesso! :D");
+
             // Redirecionar o usuário para o dashboard (página de ultimos pedidos).
             Router.push('/dashboard');
 
         } catch(err) {
             // Caso de erro, não fazer nada.
             console.log('Erro ao fazer login.', err);
+            toast.error("Erro ao acessar. :(");
         }
     }
 
@@ -99,12 +100,15 @@ export function AuthProvider({children}:AuthProviderProps){
 
             console.log("Cadastrado!");
 
+            toast.success("Cadastrado com Sucesso! :D");
+
             // Redirecionar o usuário para a página de login.
             Router.push('/');
 
         } catch(err) {
             // Caso de erro, não fazer nada.
             console.log('Erro ao fazer cadastro.', err);
+            toast.error("Erro ao cadastrar. :(");
         }
     }
 

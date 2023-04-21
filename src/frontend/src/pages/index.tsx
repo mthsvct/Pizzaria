@@ -13,7 +13,8 @@ import Link from 'next/link';
 import { AuthContext } from '../contexts/AuthContext';
 
 import { Inter } from 'next/font/google'
-
+import { toast } from 'react-toastify';
+import { canSSRGuest } from '../utils/canSSRGuest';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,7 +31,7 @@ export default function Home() {
 		event.preventDefault();
 
 		if (email === '' || password === ''){
-			alert('Preencha todos os campos!'); 
+			toast.warning('Preencha todos os campos!');
 			return 
 		}
 
@@ -83,3 +84,10 @@ export default function Home() {
 		</>
 	)
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+	return {
+		props: {}
+	}
+});
+
